@@ -1,6 +1,6 @@
 # Mesos Cookbook [![Build Status](https://travis-ci.org/evertrue/et_mesos-cookbook.png?branch=master)](https://travis-ci.org/evertrue/et_mesos-cookbook)
 
-Install Mesos (<http://mesos.apache.org/>) and configure mesos master and slave.
+Install Mesos (<http://mesos.apache.org/>) and configure mesos master and agent.
 This cookbook also supports installation by both bulding from source and with [Mesosphere](http://mesosphere.io) package.
 You can switch installation type using the `node[:et_mesos][:type]` attribute (`source` or `mesosphere`).
 
@@ -43,7 +43,7 @@ Configure master and cluster deployment configuration files, and start
 `mesos-master`.
 
 * `node[:et_mesos][:deploy_dir]/masters`
-* `node[:et_mesos][:deploy_dir]/slaves`
+* `node[:et_mesos][:deploy_dir]/agents`
 * `node[:et_mesos][:deploy_dir]/mesos-deploy-env.sh`
 * `node[:et_mesos][:deploy_dir]/mesos-master-env.sh`
 
@@ -77,25 +77,25 @@ mesos-master --zk=zk://localhost:2181/mesos --port=5050 --log_dir=/var/log/mesos
 
 See the [latest Mesos config docs](http://mesos.apache.org/documentation/latest/configuration/) for available options or the output of `mesos-master --help`.
 
-### et_mesos::slave
+### et_mesos::agent
 
-Configure slave configuration files, and start `mesos-slave`.
+Configure agent configuration files, and start `mesos-agent`.
 
-* `node[:et_mesos][:deploy_dir]/mesos-slave-env.sh`
+* `node[:et_mesos][:deploy_dir]/mesos-agent-env.sh`
 
 Furthermore, this recipe also configures upstart configuration files.
 
 * `/etc/mesos/zk`
 * `/etc/defaults/mesos`
-* `/etc/defaults/mesos-slave`
+* `/etc/defaults/mesos-agent`
 
-#### How to configure `mesos-slave`
+#### How to configure `mesos-agent`
 
-You can configure `mesos-slave` command line options by `node[:et_mesos][:slave]` hash.
+You can configure `mesos-agent` command line options by `node[:et_mesos][:agent]` hash.
 If you have a configuration as shown below:
 
 ```
-node[:et_mesos][:slave] = {
+node[:et_mesos][:agent] = {
   master:         'zk://localhost:2181/mesos',
   log_dir:        '/var/log/mesos',
   containerizers: 'docker,mesos',
@@ -104,19 +104,19 @@ node[:et_mesos][:slave] = {
 }
 ```
 
-Then `mesos-slave` will be invoked with command line options like this:
+Then `mesos-agent` will be invoked with command line options like this:
 
 ```
-mesos-slave --master=zk://localhost:2181/mesos --log_dir=/var/log/mesos --containerizers=docker,mesos --isolation=cgroups/cpu,cgroups/mem --work_dir=/var/run/work
+mesos-agent --master=zk://localhost:2181/mesos --log_dir=/var/log/mesos --containerizers=docker,mesos --isolation=cgroups/cpu,cgroups/mem --work_dir=/var/run/work
 ```
 
-See the [latest Mesos config docs](http://mesos.apache.org/documentation/latest/configuration/) for available options or the output of `mesos-slave --help`.
+See the [latest Mesos config docs](http://mesos.apache.org/documentation/latest/configuration/) for available options or the output of `mesos-agent --help`.
 
 ## Usage
 
-Wrap this cookbook, setting the `node[:et_mesos][:type]` attribute as appropriate for your installation, and `include_recipe 'et_mesos::master'` or `include_recipe 'et_mesos::slave'`, depending on what part of the cluster you need to provision.
+Wrap this cookbook, setting the `node[:et_mesos][:type]` attribute as appropriate for your installation, and `include_recipe 'et_mesos::master'` or `include_recipe 'et_mesos::agent'`, depending on what part of the cluster you need to provision.
 
-The recommendation would be to have two wrapper cookbooks, one for the master(s), and another for your slave(s).
+The recommendation would be to have two wrapper cookbooks, one for the master(s), and another for your agent(s).
 
 ## Attributes
 
@@ -188,9 +188,9 @@ The recommendation would be to have two wrapper cookbooks, one for the master(s)
         <td>[ ]</td>
     </tr>
     <tr>
-        <td><tt>[:et_mesos][:slave_ips]</tt></td>
+        <td><tt>[:et_mesos][:agent_ips]</tt></td>
         <td>Array of String</td>
-        <td>IP list of slaves used in <tt>mesos-[start|stop]-cluster</tt></td>
+        <td>IP list of agents used in <tt>mesos-[start|stop]-cluster</tt></td>
         <td>[ ]</td>
     </tr>
     <tr>
@@ -221,15 +221,15 @@ The recommendation would be to have two wrapper cookbooks, one for the master(s)
         <td></td>
     </tr>
     <tr>
-        <td><tt>[:et_mesos][:slave][:master]</tt></td>
+        <td><tt>[:et_mesos][:agent][:master]</tt></td>
         <td>String</td>
         <td>[REQUIRED] mesos master url.This should be ip:port for non-ZooKeeper based masters, otherwise a zk:// . when <tt>mesosphere</tt>, you should set zk:// address. </td>
         <td></td>
     </tr>
     <tr>
-        <td><tt>[:et_mesos][:slave][:option_name]</tt></td>
+        <td><tt>[:et_mesos][:agent][:option_name]</tt></td>
         <td>String</td>
-        <td>Like <tt>[:et_mesos][:master][:option_name]</tt> above, arbitrary options may be specified as a key for a slave by replacing `option_name` with your option’s key.</td>
+        <td>Like <tt>[:et_mesos][:master][:option_name]</tt> above, arbitrary options may be specified as a key for a agent by replacing `option_name` with your option’s key.</td>
         <td></td>
     </tr>
 </table>
@@ -241,7 +241,7 @@ There are a couple of test suites in place:
 * `chefspec` for unit tests.
 * `test-kitchen` with `serverspec` for integration tests (using `vagrant`).
 
-These test both `source` and `mesosphere` type installations (using both the `master` and `slave` recipes).
+These test both `source` and `mesosphere` type installations (using both the `master` and `agent` recipes).
 
 ## Contributing
 

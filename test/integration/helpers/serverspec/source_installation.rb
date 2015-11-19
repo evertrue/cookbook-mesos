@@ -102,13 +102,13 @@ shared_examples_for 'an installation from source' do
         %w(
           mesos-daemon.sh
           mesos-master
-          mesos-slave
+          mesos-agent
           mesos-start-cluster.sh
           mesos-start-masters.sh
-          mesos-start-slaves.sh
+          mesos-start-agents.sh
           mesos-stop-cluster.sh
           mesos-stop-masters.sh
-          mesos-stop-slaves.sh
+          mesos-stop-agents.sh
         ).map { |script| "/usr/local/sbin/#{script}" }
       end
 

@@ -15,7 +15,7 @@ recipe           'et_mesos::default', 'install mesos.'
 recipe           'et_mesos::mesosphere', 'install mesos from mesosphere package.'
 recipe           'et_mesos::source', 'install mesos from source(default recipe).'
 recipe           'et_mesos::master',  'configure the machine as master.'
-recipe           'et_mesos::slave',   'configure the machine as slave.'
+recipe           'et_mesos::agent',   'configure the machine as agent.'
 
 depends          'java',            '~> 1.35'
 depends          'python',          '~> 1.4'
@@ -29,7 +29,7 @@ suggests         'docker'
 suggests         'zookeeper'
 
 attribute       'et_mesos/type',
-  recipes:      ['et_mesos::source', 'et_mesos::mesosphere', 'et_mesos::master', 'et_mesos::slave'],
+  recipes:      ['et_mesos::source', 'et_mesos::mesosphere', 'et_mesos::master', 'et_mesos::agent'],
   display_name: 'installation type',
   description:  "Value should be 'source' | 'mesosphere'.",
   default:      'source'
@@ -47,7 +47,7 @@ attribute       'et_mesos/mesosphere/with_zookeeper',
   default:      'false'
 
 attribute       'et_mesos/prefix',
-  recipes:      ['et_mesos::source', 'et_mesos::master', 'et_mesos::slave'],
+  recipes:      ['et_mesos::source', 'et_mesos::master', 'et_mesos::agent'],
   display_name: 'Prefix value to be passed to configure script',
   description:  'prefix value to be passed to configure script',
   default:      '/usr/local'
@@ -81,7 +81,7 @@ attribute       'et_mesos/master_ips',
   display_name: 'IP list of masters',
   description:  'used in mesos-start/stop-cluster scripts.'
 
-attribute       'et_mesos/slave_ips',
+attribute       'et_mesos/agent_ips',
   recipes:      ['et_mesos::master'],
-  display_name: 'IP list of slaves',
+  display_name: 'IP list of agents',
   description:  'used in mesos-start/stop-cluster scripts.'
