@@ -27,7 +27,7 @@ shared_examples_for 'an installation from mesosphere' do |opt|
     expect(package('mesos')).to be_installed
   end
 
-  describe command('apt-mark showhold mesos') do
+  describe command('apt-mark showhold mesos'), if: %w(debian ubuntu).include?(os[:family]) do
     it 'places a hold on the mesos package' do
       expect(subject.stdout).to contain('mesos')
     end
