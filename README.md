@@ -1,4 +1,4 @@
-# Mesos Cookbook [![Build Status](https://travis-ci.org/evertrue/mesos-cookbook.png?branch=master)](https://travis-ci.org/evertrue/mesos-cookbook)
+# Mesos Cookbook [![Build Status](https://travis-ci.org/evertrue/et_mesos-cookbook.png?branch=master)](https://travis-ci.org/evertrue/et_mesos-cookbook)
 
 Install Mesos (<http://mesos.apache.org/>) and configure mesos master and slave.
 This cookbook also supports installation by both bulding from source and with [Mesosphere](http://mesosphere.io) package.
@@ -254,4 +254,4 @@ These test both `source` and `mesosphere` type installations (using both the `ma
 
 MIT License.  see [LICENSE.txt](LICENSE.txt)
 
-(Please note that before 2015-02-06-18:00 PST, this project is opened under Apache License, Version 2.0. See also [README.md in old version](https://github.com/evertrue/mesos-cookbook/blob/b9e660382affaba7c3906367fbd135e0de49de02/README.md#license))
+(Please note that before 2015-02-06-18:00 PST, this project is opened under Apache License, Version 2.0. See also [README.md in old version](https://github.com/evertrue/et_mesos-cookbook/blob/b9e660382affaba7c3906367fbd135e0de49de02/README.md#license))
