@@ -43,8 +43,9 @@ describe 'et_mesos::mesosphere' do
       end.converge described_recipe
     end
 
-    it 'includes et_mesos::zookeeper' do
-      expect(chef_run).to include_recipe 'et_mesos::zookeeper'
+    it 'includes zookeeper recipes' do
+      expect(chef_run).to include_recipe 'zookeeper::default'
+      expect(chef_run).to include_recipe 'zookeeper::service'
     end
   end
 
