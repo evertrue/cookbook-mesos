@@ -33,7 +33,8 @@ Build and install Mesos from source (downloads from [GitHub](https://github.com/
 ### et_mesos::mesosphere
 
 Install Mesos using Mesosphere's `mesos` package.
-You can also install `zookeeper` package by `node[:et_mesos][:mesosphere][:with_zookeeper]` if required because Mesosphere's Mesos package doesn't include ZooKeeper.
+
+You can also install ZooKeeper by setting `node[:et_mesos][:mesosphere][:with_zookeeper] = true` if needed, as Mesosphere's Mesos package doesn't include ZooKeeper.
 
 ### et_mesos::master
 
@@ -158,7 +159,7 @@ The recommendation would be to have two wrapper cookbooks, one for the master(s)
     <tr>
         <td><tt>[:et_mesos][:mesosphere][:with_zookeeper]</tt></td>
         <td>String</td>
-        <td>Flag for installing zookeeper package, only applies to <tt>[:et_mesos][:type] = mesosphere</tt>.</td>
+        <td>Flag for installing ZooKeeper, only applies to <tt>[:et_mesos][:type] = mesosphere</tt>.</td>
         <td><tt>false</tt></td>
     </tr>
     <tr>
