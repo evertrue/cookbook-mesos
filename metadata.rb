@@ -24,9 +24,9 @@ depends          'maven',           '~> 1.3'
 depends          'ulimit',          '~> 0.3'
 depends          'apt',             '~> 2.8'
 depends          'yum',             '~> 3.7'
-depends          'zookeeper',       '~> 4.0'
 
 suggests         'docker'
+suggests         'zookeeper'
 
 attribute       'et_mesos/type',
   recipes:      ['et_mesos::source', 'et_mesos::mesosphere', 'et_mesos::master', 'et_mesos::slave'],
@@ -42,8 +42,8 @@ attribute       'et_mesos/version',
 
 attribute       'et_mesos/mesosphere/with_zookeeper',
   recipes:      ['et_mesos::mesosphere'],
-  display_name: 'switch for installing zookeeper',
-  description:  "if true, zookeeper will be installed using the zookeeper cookbook",
+  display_name: 'switch for installing zookeeper packages',
+  description:  "if true, zookeeper packages will be installed with mesosphere's mesos package",
   default:      'false'
 
 attribute       'et_mesos/prefix',
