@@ -54,7 +54,7 @@ end
 
 mesos_version = node['et_mesos']['version']
 prefix = node['et_mesos']['prefix']
-node.default[:et_mesos][:deploy_dir] = "#{prefix}/var/mesos/deploy"
+node.default['et_mesos']['deploy_dir'] = "#{prefix}/var/mesos/deploy"
 bin = "#{prefix}/sbin/mesos-master"
 cmd = Mixlib::ShellOut.new("#{bin} --version |cut -f 2 -d ' '")
 
