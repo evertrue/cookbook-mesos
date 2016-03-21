@@ -18,11 +18,11 @@ directory deploy_dir do
 end
 
 unless node['et_mesos']['master']['zk']
-  fail "node['et_mesos']['master']['zk'] is required to configure mesos-master."
+  raise "node['et_mesos']['master']['zk'] is required to configure mesos-master."
 end
 
 unless node['et_mesos']['master']['quorum']
-  fail "node['et_mesos']['master']['quorum'] is required to configure " \
+  raise "node['et_mesos']['master']['quorum'] is required to configure " \
        'mesos-master.'
 end
 

@@ -18,7 +18,7 @@ directory deploy_dir do
 end
 
 unless node['et_mesos']['slave']['master']
-  fail "node['et_mesos']['slave']['master'] is required to configure mesos-slave."
+  raise "node['et_mesos']['slave']['master'] is required to configure mesos-slave."
 end
 
 # configuration files for mesos-daemon.sh provided by both source and mesosphere

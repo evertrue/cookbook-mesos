@@ -5,12 +5,12 @@
 
 # Avoid running on unsupported systems
 unless %w(ubuntu centos).include? node['platform']
-  fail "#{node['platform']} is not supported on #{cookbook_name} cookbook"
+  raise "#{node['platform']} is not supported on #{cookbook_name} cookbook"
 end
 
 # Fail early if an unsupported install type is specified
 unless %w(source mesosphere).include? node['et_mesos']['type']
-  fail "node['et_mesos']['type'] should be 'source' or 'mesosphere'."
+  raise "node['et_mesos']['type'] should be 'source' or 'mesosphere'."
 end
 
 case node['platform']
