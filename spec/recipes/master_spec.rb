@@ -62,8 +62,8 @@ describe 'et_mesos::master' do
       expect(chef_run).to create_template "#{deploy_dir}/masters"
     end
 
-    it 'creates the slaves config file' do
-      expect(chef_run).to create_template "#{deploy_dir}/slaves"
+    it 'creates the agents config file' do
+      expect(chef_run).to create_template "#{deploy_dir}/agents"
     end
 
     describe 'deploy env file' do
@@ -131,14 +131,14 @@ describe 'et_mesos::master' do
     end
   end
 
-  context 'when master and slave IPs are specified in attributes' do
+  context 'when master and agent IPs are specified in attributes' do
     let :chef_run do
       ChefSpec::ServerRunner.new do |node|
         # These attributes are set to avoid failing the Chef run
         node.set['et_mesos']['master']['zk'] = 'zk-string'
         node.set['et_mesos']['master']['quorum'] = '1'
         node.set['et_mesos']['master_ips'] = %w(10.0.0.1)
-        node.set['et_mesos']['slave_ips'] = %w(10.0.0.4)
+        node.set['et_mesos']['agent_ips'] = %w(10.0.0.4)
       end.converge described_recipe
     end
 
@@ -147,8 +147,8 @@ describe 'et_mesos::master' do
         .with_content(/^10.0.0.1$/)
     end
 
-    it 'has a slaves config with supplied IPs' do
-      expect(chef_run).to render_file("#{deploy_dir}/slaves")
+    it 'has a agents config with supplied IPs' do
+      expect(chef_run).to render_file("#{deploy_dir}/agents")
         .with_content(/^10.0.0.4$/)
     end
   end

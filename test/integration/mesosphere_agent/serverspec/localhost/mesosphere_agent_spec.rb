@@ -2,16 +2,16 @@
 
 require 'spec_helper'
 
-describe 'et_mesos::slave' do
+describe 'et_mesos::agent' do
   it_behaves_like 'an installation from mesosphere', with_zookeeper: true
 
-  it_behaves_like 'a slave node'
+  it_behaves_like 'a agent node'
 
-  context 'slave upstart script' do
-    describe file '/etc/init/mesos-slave.conf' do
+  context 'agent upstart script' do
+    describe file '/etc/init/mesos-agent.conf' do
       describe '#content' do
         subject { super().content }
-        it { is_expected.to include 'exec /usr/bin/mesos-init-wrapper slave' }
+        it { is_expected.to include 'exec /usr/bin/mesos-init-wrapper agent' }
       end
     end
   end
@@ -49,32 +49,32 @@ describe 'et_mesos::slave' do
       end
     end
 
-    describe 'slave specific configuration file' do
-      let :slave_file do
-        file('/etc/default/mesos-slave')
+    describe 'agent specific configuration file' do
+      let :agent_file do
+        file('/etc/default/mesos-agent')
       end
 
       it 'creates it' do
-        expect(slave_file).to be_a_file
+        expect(agent_file).to be_a_file
       end
 
       it 'contains MASTER variable' do
-        expect(slave_file.content).to match %r{^MASTER=`cat /etc/mesos/zk`$}
+        expect(agent_file.content).to match %r{^MASTER=`cat /etc/mesos/zk`$}
       end
 
       it 'contains ISOLATION variable' do
-        expect(slave_file.content).to match %r{^ISOLATION=cgroups/cpu,cgroups/mem$}
+        expect(agent_file.content).to match %r{^ISOLATION=cgroups/cpu,cgroups/mem$}
       end
     end
 
-    describe 'mesos-slave directory' do
+    describe 'mesos-agent directory' do
       it 'creates it' do
-        expect(file('/etc/mesos-slave')).to be_a_directory
+        expect(file('/etc/mesos-agent')).to be_a_directory
       end
 
       describe 'work dir file' do
         let :work_dir_file do
-          file '/etc/mesos-slave/work_dir'
+          file '/etc/mesos-agent/work_dir'
         end
 
         it 'creates it' do
@@ -88,7 +88,7 @@ describe 'et_mesos::slave' do
 
       describe 'rack id file' do
         let :rack_id_file do
-          file '/etc/mesos-slave/attributes/rackid'
+          file '/etc/mesos-agent/attributes/rackid'
         end
 
         it 'exists' do

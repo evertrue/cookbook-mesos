@@ -17,19 +17,19 @@ shared_examples_for 'a master node' do
     end
   end
 
-  describe 'slaves file' do
-    let :slaves_file do
-      file '/usr/etc/mesos/slaves'
+  describe 'agents file' do
+    let :agents_file do
+      file '/usr/etc/mesos/agents'
     end
 
     it 'creates it' do
-      expect(slaves_file).to be_a_file
+      expect(agents_file).to be_a_file
     end
 
     it 'contains a newline separated list of configured master IPs' do
-      expect(slaves_file.content).to match(/^10.0.0.4$/)
-      expect(slaves_file.content).to match(/^10.0.0.5$/)
-      expect(slaves_file.content).to match(/^10.0.0.6$/)
+      expect(agents_file.content).to match(/^10.0.0.4$/)
+      expect(agents_file.content).to match(/^10.0.0.5$/)
+      expect(agents_file.content).to match(/^10.0.0.6$/)
     end
   end
 

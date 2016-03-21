@@ -30,7 +30,7 @@ end
 # by both source and mesosphere
 template "#{deploy_dir}/masters"
 
-template "#{deploy_dir}/slaves"
+template "#{deploy_dir}/agents"
 
 template "#{deploy_dir}/mesos-deploy-env.sh"
 

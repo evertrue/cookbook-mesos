@@ -11,7 +11,7 @@ respawn
 #   because it uses 'nohup' for spawning mesos-<%= @role %>
 script
   prefix=<%= node['et_mesos']['prefix'] %>
-  role=<%= @role %> # 'master' or 'slave'
+  role=<%= @role %> # 'master' or 'agent'
   exec_prefix=${prefix}
   deploy_dir=${prefix}/var/mesos/deploy
   # Increase the default number of open file descriptors.
