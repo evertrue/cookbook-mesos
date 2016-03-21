@@ -35,7 +35,7 @@ Build and install Mesos from source (downloads from [GitHub](https://github.com/
 Install Mesos using Mesosphere's `mesos` package.
 You can also install `zookeeper` package by `node['et_mesos']['mesosphere']['with_zookeeper']` if required because Mesosphere's Mesos package doesn't include ZooKeeper.
 
-For a production use case, however, instead of setting that attribute to true, one should use the [`zookeeper` cookbook](https://supermarket.chef.io/cookbooks/zookeeper) to provision a well-configured ZooKeeper instance or cluster of instances.
+For a production use case, however, instead of setting that attribute to true, one should use the [`zookeeper` cookbook](https://supermarket.chef.io/cookbooks/zookeeper) to provision a well-configured ZooKeeper instance or cluster of instances. There is a caveat to this: the `mesos` package on Ubuntu installs the `zookeeper` package, so co-locating Mesos and ZooKeeper using that cookbook is tricky, at best. A separate ZK cluster is encouraged.
 
 ### et_mesos::master
 
