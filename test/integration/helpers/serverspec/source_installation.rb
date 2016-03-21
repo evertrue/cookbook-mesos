@@ -53,7 +53,7 @@ shared_examples_for 'an installation from source' do
 
       expect(file(File.join(lib_directory_path, 'libmesos.so'))).to be_a_file
       expect(file(File.join(lib_directory_path, 'libmesos.so'))).to(
-        be_linked_to 'libmesos-0.22.1.so'
+        be_linked_to('libmesos-0.22.1.so')
       )
       expect(file(File.join(lib_directory_path, 'libmesos.la'))).to be_a_file
     end
