@@ -28,7 +28,7 @@ before_install:
 install:
 - chef --version
 - eval "$(chef shell-init bash)"
-- chef gem install kitchen-ec2
+- chef gem install kitchen-ec2 kitchen-sync
 - berks
 before_script:
 - rubocop --version
