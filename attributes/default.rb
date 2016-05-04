@@ -6,7 +6,7 @@ default['et_mesos']['deploy_dir']       = '/usr/etc/mesos'
 default['et_mesos']['master_ips']       = []
 default['et_mesos']['slave_ips']        = []
 
-default['et_mesos']['mesosphere']['with_zookeeper'] = false
+default['et_mesos']['package']['with_zookeeper'] = false
 
 default['et_mesos']['master']['log_dir']  = '/var/log/mesos'
 default['et_mesos']['master']['work_dir'] = '/tmp/mesos'

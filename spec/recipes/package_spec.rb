@@ -1,11 +1,11 @@
 #
 # Cookbook Name:: mesos
-# Spec:: mesosphere
+# Spec:: package
 #
 
 require 'spec_helper'
 
-describe 'et_mesos::mesosphere' do
+describe 'et_mesos::package' do
   context 'when all attributes are default, on CentOS 6.6' do
     let(:chef_run) do
       runner = ChefSpec::ServerRunner.new(platform: 'centos', version: '6.6')
@@ -38,10 +38,10 @@ describe 'et_mesos::mesosphere' do
     end
   end
 
-  context "when node['et_mesos']['mesosphere']['with_zookeeper'] = true, on any platform" do
+  context "when node['et_mesos']['package']['with_zookeeper'] = true, on any platform" do
     let :chef_run do
       ChefSpec::ServerRunner.new do |node|
-        node.set['et_mesos']['mesosphere']['with_zookeeper'] = true
+        node.set['et_mesos']['package']['with_zookeeper'] = true
       end.converge described_recipe
     end
 

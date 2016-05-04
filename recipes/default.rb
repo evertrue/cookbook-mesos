@@ -16,4 +16,4 @@ when 'ubuntu'
 end
 
 include_recipe 'java'
-include_recipe 'et_mesos::mesosphere'
+include_recipe 'et_mesos::package'

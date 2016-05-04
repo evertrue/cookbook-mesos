@@ -26,15 +26,15 @@ platforms:
       image_id: ami-8997afe0
 
 suites:
-  - name: mesosphere_master
+  - name: package_master
     driver:
       tags:
-        Name: et_mesos_mesosphere_master
+        Name: et_mesos_package_master
     run_list:
       - recipe[et_mesos::master]
     attributes:
       et_mesos:
-        mesosphere:
+        package:
           with_zookeeper: true
         master:
           zk: 'zk://localhost:2181/mesos'
@@ -48,10 +48,10 @@ suites:
           - 10.0.0.5
           - 10.0.0.6
 
-  - name: mesosphere_slave
+  - name: package_slave
     driver:
       tags:
-        Name: et_mesos_mesosphere_slave
+        Name: et_mesos_package_slave
     run_list:
       # master recipe is only for asserting mesos-slave healthy startup.
       - recipe[et_mesos::master]
@@ -74,5 +74,5 @@ suites:
           - 10.0.0.4
           - 10.0.0.5
           - 10.0.0.6
-        mesosphere:
+        package:
           with_zookeeper: true

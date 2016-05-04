@@ -3,7 +3,7 @@
 require 'spec_helper'
 
 describe 'et_mesos::master' do
-  it_behaves_like 'an installation from mesosphere', with_zookeeper: true
+  it_behaves_like 'an installation from package', with_zookeeper: true
 
   it_behaves_like 'a master node'
 

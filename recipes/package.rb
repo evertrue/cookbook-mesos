@@ -1,9 +1,9 @@
 #
 # Cookbook Name:: et_mesos
-# Recipe:: mesosphere
+# Recipe:: package
 #
 
-include_recipe 'et_mesos::zookeeper' if node['et_mesos']['mesosphere']['with_zookeeper']
+include_recipe 'et_mesos::zookeeper' if node['et_mesos']['package']['with_zookeeper']
 
 case node['platform']
 when 'centos'

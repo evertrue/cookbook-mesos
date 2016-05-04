@@ -1,6 +1,6 @@
 # encoding: utf-8
 
-shared_examples_for 'an installation from mesosphere' do |opt|
+shared_examples_for 'an installation from package' do |opt|
   if opt[:with_zookeeper]
     context 'with zookeeper' do
       it 'installs Zookeeper packages' do

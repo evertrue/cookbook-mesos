@@ -3,6 +3,6 @@ require 'serverspec'
 
 set :backend, :exec
 
-require 'mesosphere_installation'
+require 'package_installation'
 require 'master_configuration'
 require 'slave_configuration'

@@ -33,7 +33,7 @@ describe 'et_mesos::default' do
     %w(
       apt
       java
-      et_mesos::mesosphere
+      et_mesos::package
     ).each do |r|
       it "includes the #{r} recipe" do
         expect(chef_run).to include_recipe r

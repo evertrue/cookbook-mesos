@@ -12,7 +12,7 @@ supports         'ubuntu', '>= 14.04'
 supports         'centos', '>= 6.5'
 
 recipe           'et_mesos::default', 'install mesos.'
-recipe           'et_mesos::mesosphere', 'install mesos from mesosphere package.'
+recipe           'et_mesos::package', 'install mesos from mesosphere package.'
 recipe           'et_mesos::master',  'configure the machine as master.'
 recipe           'et_mesos::slave',   'configure the machine as slave.'
 
@@ -28,13 +28,13 @@ suggests         'docker'
 suggests         'zookeeper'
 
 attribute       'et_mesos/version',
-  recipes:      ['et_mesos::mesosphere'],
+  recipes:      ['et_mesos::package'],
   display_name: 'Version to be installed.',
   description:  "branch name or tag name at http://github.com/apache/mesos, or mesos's version name",
   default:      '0.23.0'
 
-attribute       'et_mesos/mesosphere/with_zookeeper',
-  recipes:      ['et_mesos::mesosphere'],
+attribute       'et_mesos/package/with_zookeeper',
+  recipes:      ['et_mesos::package'],
   display_name: 'switch for installing zookeeper packages',
   description:  "if true, zookeeper packages will be installed with mesosphere's mesos package",
   default:      'false'
