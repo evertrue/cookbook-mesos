@@ -34,7 +34,6 @@ suites:
       - recipe[et_mesos::master]
     attributes:
       et_mesos:
-        type: mesosphere
         mesosphere:
           with_zookeeper: true
         master:
@@ -59,7 +58,6 @@ suites:
       - recipe[et_mesos::slave]
     attributes:
       et_mesos:
-        type: mesosphere
         slave:
           attributes:
             rackid: us-east-1b
@@ -78,53 +76,3 @@ suites:
           - 10.0.0.6
         mesosphere:
           with_zookeeper: true
-
-  - name: source_master
-    driver:
-      tags:
-        Name: et_mesos_source_master
-    run_list:
-      - recipe[et_mesos::master]
-    attributes:
-      et_mesos:
-        type: source
-        master:
-          zk: 'zk://localhost:2181/mesos'
-          quorum: 1
-        master_ips:
-          - 10.0.0.1
-          - 10.0.0.2
-          - 10.0.0.3
-        slave_ips:
-          - 10.0.0.4
-          - 10.0.0.5
-          - 10.0.0.6
-
-  - name: source_slave
-    driver:
-      tags:
-        Name: et_mesos_source_slave
-    run_list:
-      # master recipe is only for asserting mesos-slave healthy startup.
-      - recipe[et_mesos::master]
-      - recipe[et_mesos::slave]
-    attributes:
-      et_mesos:
-        type: source
-        master:
-          zk: 'zk://localhost:2181/mesos'
-          ip: 127.0.0.1
-          quorum: 1
-        slave:
-          attributes:
-            rackid: us-east-1b
-          master: 127.0.0.1:5050
-        # these keys below are only for master configurations.
-        master_ips:
-          - 10.0.0.1
-          - 10.0.0.2
-          - 10.0.0.3
-        slave_ips:
-          - 10.0.0.4
-          - 10.0.0.5
-          - 10.0.0.6

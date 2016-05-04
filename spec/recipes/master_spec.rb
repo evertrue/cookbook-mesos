@@ -6,7 +6,7 @@
 require 'spec_helper'
 
 describe 'et_mesos::master' do
-  deploy_dir = '/usr/local/var/mesos/deploy'
+  deploy_dir = '/usr/etc/mesos'
 
   context "when node['et_mesos']['master']['zk'] is not set" do
     let(:chef_run) { ChefSpec::ServerRunner.new.converge described_recipe }
@@ -153,71 +153,68 @@ describe 'et_mesos::master' do
     end
   end
 
-  context "when node['et_mesos']['type'] == mesosphere, on Ubuntu 14.04" do
-    let :chef_run do
-      ChefSpec::ServerRunner.new do |node|
-        node.set['et_mesos']['type'] = 'mesosphere'
-        node.set['et_mesos']['master']['zk'] = 'zk-string'
-        node.set['et_mesos']['master']['quorum'] = '1'
-        node.set['et_mesos']['master']['fake_key'] = 'fake_value'
-      end.converge(described_recipe)
+  let :chef_run do
+    ChefSpec::ServerRunner.new do |node|
+      node.set['et_mesos']['master']['zk'] = 'zk-string'
+      node.set['et_mesos']['master']['quorum'] = '1'
+      node.set['et_mesos']['master']['fake_key'] = 'fake_value'
+    end.converge(described_recipe)
+  end
+
+  it 'has a mesos-master upstart script with a different command' do
+    expect(chef_run).to render_file('/etc/init/mesos-master.conf')
+      .with_content(%r{^exec \/usr\/bin\/mesos-init-wrapper master$})
+  end
+
+  describe '/etc/mesos/zk' do
+    it 'creates it' do
+      expect(chef_run).to create_template '/etc/mesos/zk'
     end
 
-    it 'has a mesos-master upstart script with a different command' do
-      expect(chef_run).to render_file('/etc/init/mesos-master.conf')
-        .with_content(%r{^exec \/usr\/bin\/mesos-init-wrapper master$})
+    it 'contains configured zk string' do
+      expect(chef_run).to render_file('/etc/mesos/zk').with_content(/^zk-string$/)
+    end
+  end
+
+  describe '/etc/default/mesos' do
+    it 'creates it' do
+      expect(chef_run).to create_template('/etc/default/mesos')
     end
 
-    describe '/etc/mesos/zk' do
-      it 'creates it' do
-        expect(chef_run).to create_template '/etc/mesos/zk'
-      end
+    it 'contains LOGS variable' do
+      expect(chef_run).to render_file('/etc/default/mesos').with_content(%r{^LOGS=/var/log/mesos$})
+    end
+  end
 
-      it 'contains configured zk string' do
-        expect(chef_run).to render_file('/etc/mesos/zk').with_content(/^zk-string$/)
-      end
+  describe '/etc/default/mesos-master' do
+    it 'creates it' do
+      expect(chef_run).to create_template '/etc/default/mesos-master'
     end
 
-    describe '/etc/default/mesos' do
-      it 'creates it' do
-        expect(chef_run).to create_template('/etc/default/mesos')
-      end
-
-      it 'contains LOGS variable' do
-        expect(chef_run).to render_file('/etc/default/mesos').with_content(%r{^LOGS=/var/log/mesos$})
-      end
+    it 'contains PORT variable' do
+      expect(chef_run).to render_file('/etc/default/mesos-master')
+        .with_content(/^PORT=5050$/)
     end
+  end
 
-    describe '/etc/default/mesos-master' do
-      it 'creates it' do
-        expect(chef_run).to create_template '/etc/default/mesos-master'
-      end
+  it 'creates /etc/mesos-master' do
+    expect(chef_run).to create_directory '/etc/mesos-master'
+  end
 
-      it 'contains PORT variable' do
-        expect(chef_run).to render_file('/etc/default/mesos-master')
-          .with_content(/^PORT=5050$/)
-      end
-    end
+  it 'deletes the contents of /etc/mesos-master' do
+    expect(chef_run).to run_execute('rm -rf /etc/mesos-master/*')
+  end
 
-    it 'creates /etc/mesos-master' do
-      expect(chef_run).to create_directory '/etc/mesos-master'
-    end
+  describe 'configuration files in /etc/mesos-master' do
+    it "sets the content of the file matching a key in node['et_mesos']['master'] to its corresponding value" do
+      expect(chef_run).to render_file('/etc/mesos-master/quorum')
+        .with_content(/^1$/)
 
-    it 'deletes the contents of /etc/mesos-master' do
-      expect(chef_run).to run_execute('rm -rf /etc/mesos-master/*')
-    end
+      expect(chef_run).to render_file('/etc/mesos-master/work_dir')
+        .with_content '/tmp/mesos'
 
-    describe 'configuration files in /etc/mesos-master' do
-      it "sets the content of the file matching a key in node['et_mesos']['master'] to its corresponding value" do
-        expect(chef_run).to render_file('/etc/mesos-master/quorum')
-          .with_content(/^1$/)
-
-        expect(chef_run).to render_file('/etc/mesos-master/work_dir')
-          .with_content '/tmp/mesos'
-
-        expect(chef_run).to render_file('/etc/mesos-master/fake_key')
-          .with_content(/^fake_value$/)
-      end
+      expect(chef_run).to render_file('/etc/mesos-master/fake_key')
+        .with_content(/^fake_value$/)
     end
   end
 end

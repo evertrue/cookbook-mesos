@@ -6,7 +6,7 @@
 require 'spec_helper'
 
 describe 'et_mesos::slave' do
-  deploy_dir = '/usr/local/var/mesos/deploy'
+  deploy_dir = '/usr/etc/mesos'
 
   context "when node['et_mesos']['slave']['master'] is not set" do
     let(:chef_run) { ChefSpec::ServerRunner.new.converge described_recipe }
@@ -87,82 +87,79 @@ describe 'et_mesos::slave' do
     end
   end
 
-  context "when node['et_mesos']['type'] == mesosphere, on Ubuntu 14.04" do
-    let :chef_run do
-      ChefSpec::ServerRunner.new do |node|
-        node.set['et_mesos']['type'] = 'mesosphere'
-        node.set['et_mesos']['slave']['master'] = 'test-master'
-        node.set['et_mesos']['slave']['slave_key'] = 'slave_value'
-        node.set['et_mesos']['slave']['attributes']['rackid'] = 'us-east-1b'
-      end.converge(described_recipe)
+  let :chef_run do
+    ChefSpec::ServerRunner.new do |node|
+      node.set['et_mesos']['slave']['master'] = 'test-master'
+      node.set['et_mesos']['slave']['slave_key'] = 'slave_value'
+      node.set['et_mesos']['slave']['attributes']['rackid'] = 'us-east-1b'
+    end.converge(described_recipe)
+  end
+
+  it "has a slave env file with each key-value pair from node['et_mesos']['slave']" do
+    expect(chef_run).to render_file("#{deploy_dir}/mesos-slave-env.sh")
+      .with_content 'export MESOS_slave_key=slave_value'
+  end
+
+  it 'has a mesos-slave upstart script with a different command' do
+    expect(chef_run).to render_file('/etc/init/mesos-slave.conf')
+      .with_content 'exec /usr/bin/mesos-init-wrapper slave'
+  end
+
+  describe '/etc/mesos/zk' do
+    it 'creates it' do
+      expect(chef_run).to create_template '/etc/mesos/zk'
     end
 
-    it "has a slave env file with each key-value pair from node['et_mesos']['slave']" do
-      expect(chef_run).to render_file("#{deploy_dir}/mesos-slave-env.sh")
-        .with_content 'export MESOS_slave_key=slave_value'
+    it 'contains configured zk string' do
+      expect(chef_run).to render_file('/etc/mesos/zk').with_content 'test-master'
+    end
+  end
+
+  describe '/etc/default/mesos' do
+    it 'creates it' do
+      expect(chef_run).to create_template '/etc/default/mesos'
     end
 
-    it 'has a mesos-slave upstart script with a different command' do
-      expect(chef_run).to render_file('/etc/init/mesos-slave.conf')
-        .with_content 'exec /usr/bin/mesos-init-wrapper slave'
+    it 'populates the log_dir correctly' do
+      expect(chef_run).to render_file('/etc/default/mesos')
+        .with_content 'LOGS=/var/log/mesos'
+    end
+  end
+
+  describe '/etc/default/mesos-slave' do
+    it 'creates it' do
+      expect(chef_run).to create_template '/etc/default/mesos-slave'
     end
 
-    describe '/etc/mesos/zk' do
-      it 'creates it' do
-        expect(chef_run).to create_template '/etc/mesos/zk'
-      end
-
-      it 'contains configured zk string' do
-        expect(chef_run).to render_file('/etc/mesos/zk').with_content 'test-master'
-      end
+    it 'contains ISOLATION variable' do
+      expect(chef_run).to render_file('/etc/default/mesos-slave')
+        .with_content %r{^ISOLATION=cgroups/cpu,cgroups/mem$}
     end
+  end
 
-    describe '/etc/default/mesos' do
-      it 'creates it' do
-        expect(chef_run).to create_template '/etc/default/mesos'
-      end
+  it 'creates /etc/mesos-slave' do
+    expect(chef_run).to create_directory('/etc/mesos-slave').with(
+      recursive: true
+    )
+  end
 
-      it 'populates the log_dir correctly' do
-        expect(chef_run).to render_file('/etc/default/mesos')
-          .with_content 'LOGS=/var/log/mesos'
-      end
-    end
+  it 'removes the contents of /etc/mesos-slave dir' do
+    expect(chef_run).to run_execute 'rm -rf /etc/mesos-slave/*'
+  end
 
-    describe '/etc/default/mesos-slave' do
-      it 'creates it' do
-        expect(chef_run).to create_template '/etc/default/mesos-slave'
-      end
+  describe 'configuration files in /etc/mesos-slave' do
+    it "sets the content of the file matching a key in node['et_mesos']['slave'] " \
+       'to its corresponding value' do
+      expect(chef_run).to render_file('/etc/mesos-slave/work_dir')
+        .with_content '/tmp/mesos'
 
-      it 'contains ISOLATION variable' do
-        expect(chef_run).to render_file('/etc/default/mesos-slave')
-          .with_content %r{^ISOLATION=cgroups/cpu,cgroups/mem$}
-      end
-    end
+      expect(chef_run).to render_file('/etc/mesos-slave/slave_key')
+        .with_content 'slave_value'
 
-    it 'creates /etc/mesos-slave' do
-      expect(chef_run).to create_directory('/etc/mesos-slave').with(
-        recursive: true
-      )
-    end
+      expect(chef_run).to create_directory '/etc/mesos-slave/attributes'
 
-    it 'removes the contents of /etc/mesos-slave dir' do
-      expect(chef_run).to run_execute 'rm -rf /etc/mesos-slave/*'
-    end
-
-    describe 'configuration files in /etc/mesos-slave' do
-      it "sets the content of the file matching a key in node['et_mesos']['slave'] " \
-         'to its corresponding value' do
-        expect(chef_run).to render_file('/etc/mesos-slave/work_dir')
-          .with_content '/tmp/mesos'
-
-        expect(chef_run).to render_file('/etc/mesos-slave/slave_key')
-          .with_content 'slave_value'
-
-        expect(chef_run).to create_directory '/etc/mesos-slave/attributes'
-
-        expect(chef_run).to render_file('/etc/mesos-slave/attributes/rackid')
-          .with_content 'us-east-1b'
-      end
+      expect(chef_run).to render_file('/etc/mesos-slave/attributes/rackid')
+        .with_content 'us-east-1b'
     end
   end
 end

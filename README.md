@@ -1,8 +1,7 @@
 # Mesos Cookbook [![Build Status](https://travis-ci.org/evertrue/et_mesos-cookbook.png?branch=master)](https://travis-ci.org/evertrue/et_mesos-cookbook)
 
 Install Mesos (<http://mesos.apache.org/>) and configure mesos master and slave.
-This cookbook also supports installation by both bulding from source and with [Mesosphere](http://mesosphere.io) package.
-You can switch installation type using the `node['et_mesos']['type']` attribute (`source` or `mesosphere`).
+This cookbook installs Mesos using [Mesosphere](http://mesosphere.io) packages.
 
 All credit to @everpeace for the basis for this cookbook, [everpeace/cookbook-mesos](https://github.com/everpeace/cookbook-mesos).
 
@@ -12,23 +11,11 @@ Currently only supports `ubuntu` and `centos`. But `centos` support is  experime
 
 If you would use `cgroups` isolator or `docker` containerizer, Ubuntu 14.04 is highly recommended. Note that `docker` containerizer is only supported by Mesos 0.20.0+.
 
-## Installation Type
-
-You have to specify intallation type (`source` or `mesosphere`) by setting `node['et_mesos']['type']` variable.
-
-Currently this cookbook defaults to build mesos from source, i.e.
-`node['et_mesos']['type']` is set to `source`.
-
 ## Recipes
 
 ### et_mesos::default
 
-Install mesos using `source` recipe or `mesosphere` recipe, depending
-on what the `node['et_mesos']['type']` attribute is set to (`source` or `mesosphere`).
-
-### et_mesos::source
-
-Build and install Mesos from source (downloads from [GitHub](https://github.com/apache/mesos), configure, make, make install).
+Install Java and Mesos, with platform-dependent switches in place.
 
 ### et_mesos::mesosphere
 
@@ -114,7 +101,7 @@ See the [latest Mesos config docs](http://mesos.apache.org/documentation/latest/
 
 ## Usage
 
-Wrap this cookbook, setting the `node['et_mesos']['type']` attribute as appropriate for your installation, and `include_recipe 'et_mesos::master'` or `include_recipe 'et_mesos::slave'`, depending on what part of the cluster you need to provision.
+Wrap this cookbook and `include_recipe 'et_mesos::master'` or `include_recipe 'et_mesos::slave'`, depending on what part of the cluster you need to provision.
 
 The recommendation would be to have two wrapper cookbooks, one for the master(s), and another for your slave(s).
 
@@ -128,39 +115,15 @@ The recommendation would be to have two wrapper cookbooks, one for the master(s)
         <th>Default</th>
     </tr>
     <tr>
-        <td><tt>['et_mesos']['type']</tt></td>
-        <td>String</td>
-        <td>installation type(<tt>source</tt> or <tt>mesosphere</tt>)</td>
-        <td><tt>source</tt></td>
-    </tr>
-    <tr>
         <td><tt>['et_mesos']['version']</tt></td>
         <td>String</td>
         <td>Version(branch or tag name at <a href="http://github.com/apache/mesos">http://github.com/apache/mesos</a>).</td>
         <td><tt>0.22.1</tt></td>
     </tr>
     <tr>
-        <td><tt>['et_mesos']['prefix']</tt></td>
-        <td>String</td>
-        <td>Prefix value to be passed to configure script for building from source.
-        <td><tt>/usr/local</tt></td>
-    </tr>
-    <tr>
-        <td><tt>['et_mesos']['home']</tt></td>
-        <td>String</td>
-        <td>Directory which mesos sources are extracted to(<tt>node['et_mesos']['home']/mesos</tt>).</td>
-        <td><tt>/opt</tt></td>
-    </tr>
-    <tr>
-        <td><tt>['et_mesos']['build']['skip_test']</tt></td>
-        <td>Boolean</td>
-        <td>Flag whether test will be performed on the build before installing.</td>
-        <td><tt>true</tt></td>
-    </tr>
-    <tr>
         <td><tt>['et_mesos']['mesosphere']['with_zookeeper']</tt></td>
         <td>String</td>
-        <td>Flag for installing zookeeper package, only applies to <tt>['et_mesos']['type'] = mesosphere</tt>.</td>
+        <td>Flag for installing zookeeper package</tt>.</td>
         <td><tt>false</tt></td>
     </tr>
     <tr>
@@ -223,7 +186,7 @@ The recommendation would be to have two wrapper cookbooks, one for the master(s)
     <tr>
         <td><tt>['et_mesos']['slave']['master']</tt></td>
         <td>String</td>
-        <td>[REQUIRED] mesos master url.This should be ip:port for non-ZooKeeper based masters, otherwise a zk:// . when <tt>mesosphere</tt>, you should set zk:// address. </td>
+        <td>[REQUIRED] mesos master url.This should be a `zk://` style address.</td>
         <td></td>
     </tr>
     <tr>
@@ -239,9 +202,7 @@ The recommendation would be to have two wrapper cookbooks, one for the master(s)
 There are a couple of test suites in place:
 
 * `chefspec` for unit tests.
-* `test-kitchen` with `serverspec` for integration tests (using `vagrant`).
-
-These test both `source` and `mesosphere` type installations (using both the `master` and `slave` recipes).
+* `test-kitchen` with `serverspec` for integration tests (using `kitchen-ec2`).
 
 ## Contributing
 

@@ -16,18 +16,6 @@ describe 'et_mesos::default' do
     end
   end
 
-  context "when node['et_mesos']['type'] is neither `source` nor `mesosphere`" do
-    let :chef_run do
-      ChefSpec::ServerRunner.new do |node|
-        node.set['et_mesos']['type'] = 'bork'
-      end.converge described_recipe
-    end
-
-    it 'exits the Chef run' do
-      expect { chef_run }.to raise_error.with_message(/should be 'source' or 'mesosphere'/)
-    end
-  end
-
   context 'when all attributes are default, on CentOS 6.6' do
     let :chef_run do
       runner = ChefSpec::ServerRunner.new(platform: 'centos', version: '6.6')
@@ -45,23 +33,11 @@ describe 'et_mesos::default' do
     %w(
       apt
       java
-      et_mesos::source
+      et_mesos::mesosphere
     ).each do |r|
       it "includes the #{r} recipe" do
         expect(chef_run).to include_recipe r
       end
-    end
-  end
-
-  context "when attribute ['et_mesos']['type'] == mesosphere" do
-    let :chef_run do
-      ChefSpec::ServerRunner.new do |node|
-        node.set['et_mesos']['type'] = 'mesosphere'
-      end.converge described_recipe
-    end
-
-    it 'includes the mesosphere recipe' do
-      expect(chef_run).to include_recipe 'et_mesos::mesosphere'
     end
   end
 end
