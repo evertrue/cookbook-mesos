@@ -20,7 +20,7 @@ describe 'et_mesos::package' do
 
     it 'installs the default version of the mesos yum package' do
       expect(chef_run).to install_package('mesos').with_version(
-        '0.23.0-1.0.centos66'
+        '0.28.1-2.0.20.centos66'
       )
     end
   end
@@ -64,7 +64,7 @@ describe 'et_mesos::package' do
 
     it 'installs the default version of the mesos package' do
       expect(chef_run).to install_package('mesos').with(
-        version: '0.23.0-1.0.ubuntu1404'
+        version: '0.28.1-2.0.20.ubuntu1404'
       )
     end
   end
