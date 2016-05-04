@@ -36,8 +36,6 @@ when 'centos'
       gpgkey 'http://repos.mesosphere.io/el/RPM-GPG-KEY-mesosphere'
     end
   end
-
-  yum_package "mesos >= #{node['et_mesos']['version']}"
 when 'ubuntu'
   apt_repository 'mesosphere' do
     uri "http://repos.mesosphere.com/#{node['platform']}"
@@ -45,26 +43,8 @@ when 'ubuntu'
     keyserver 'keyserver.ubuntu.com'
     key 'E56151BF'
   end
+end
 
-  target_mesos_version = "#{node['et_mesos']['version']}-" \
-            "1.0.#{node['platform']}#{node['platform_version'].sub '.', ''}"
-
-  execute 'un-hold mesos package' do
-    command 'apt-mark -qq unhold mesos'
-    only_if do
-      cmd = Mixlib::ShellOut.new('apt-cache policy mesos')
-      cmd.run_command
-      cmd.stdout[/Installed: (.*)$/, 1] != target_mesos_version
-    end
-    only_if 'apt-mark showhold mesos | grep mesos'
-  end
-
-  package 'mesos' do
-    version target_mesos_version
-  end
-
-  execute 'hold mesos package' do
-    command 'apt-mark -qq hold mesos'
-    not_if 'apt-mark showhold mesos | grep mesos'
-  end
+package 'mesos' do
+  version node['et_mesos']['version']
 end
