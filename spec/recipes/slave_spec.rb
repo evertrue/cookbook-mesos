@@ -77,7 +77,7 @@ describe 'et_mesos::slave' do
 
       it 'sets the correct role' do
         expect(chef_run).to render_file('/etc/init/mesos-slave.conf')
-          .with_content 'role=slave'
+          .with_content 'mesos slave'
       end
 
       it 'notifies service[mesos-slave] to reload service configuration' do

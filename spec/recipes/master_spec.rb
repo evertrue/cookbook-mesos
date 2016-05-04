@@ -121,7 +121,7 @@ describe 'et_mesos::master' do
 
       it 'specifies the correct role' do
         expect(chef_run).to render_file('/etc/init/mesos-master.conf')
-          .with_content 'role=master'
+          .with_content 'mesos master'
       end
 
       it 'notifies service[mesos-master] to reload service configuration' do
