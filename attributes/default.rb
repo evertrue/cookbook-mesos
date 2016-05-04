@@ -1,4 +1,4 @@
-default['et_mesos']['version']          = "0.23.0-1.0.#{node['platform']}#{node['platform_version'].sub '.', ''}"
+default['et_mesos']['version']          = "0.28.1-2.0.20.#{node['platform']}#{node['platform_version'].sub '.', ''}"
 default['et_mesos']['ssh_opts']         = '-o StrictHostKeyChecking=no ' \
                                           '-o ConnectTimeout=2'
 default['et_mesos']['deploy_with_sudo'] = '1'
