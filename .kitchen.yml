@@ -28,10 +28,10 @@ platforms:
       image_id: ami-8997afe0
 
 suites:
-  - name: package_master
+  - name: package-master
     driver:
       tags:
-        Name: et_mesos_package_master
+        Name: et-mesos-package-master
     run_list:
       - recipe[et_mesos::master]
     attributes:
@@ -50,10 +50,10 @@ suites:
           - 10.0.0.5
           - 10.0.0.6
 
-  - name: package_slave
+  - name: package-slave
     driver:
       tags:
-        Name: et_mesos_package_slave
+        Name: et-mesos-package-slave
     run_list:
       # master recipe is only for asserting mesos-slave healthy startup.
       - recipe[et_mesos::master]
