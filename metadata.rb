@@ -17,9 +17,9 @@ recipe           'et_mesos::master',  'configure the machine as master.'
 recipe           'et_mesos::slave',   'configure the machine as slave.'
 
 depends          'java',            '~> 1.35'
-depends          'ulimit',          '~> 0.3'
-depends          'apt',             '~> 2.8'
-depends          'yum',             '~> 3.7'
+depends          'ulimit',          '>= 0.3'
+depends          'apt',             '>= 2.8'
+depends          'yum',             '>= 3.7'
 
 suggests         'docker'
 suggests         'zookeeper'
