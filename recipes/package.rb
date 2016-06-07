@@ -39,7 +39,7 @@ when 'centos'
 when 'ubuntu'
   apt_repository 'mesosphere' do
     uri "http://repos.mesosphere.com/#{node['platform']}"
-    components [node['lsb']['codename'], 'main']
+    components %w(main)
     keyserver 'keyserver.ubuntu.com'
     key 'E56151BF'
   end
