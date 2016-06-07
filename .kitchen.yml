@@ -21,11 +21,7 @@ provisioner:
 
 platforms:
   - name: ubuntu-14.04
-    driver:
-      image_id: ami-9883c6f2
   - name: centos-6.5
-    driver:
-      image_id: ami-8997afe0
 
 suites:
   - name: package_master
