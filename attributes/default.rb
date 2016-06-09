@@ -23,4 +23,4 @@ default['et_mesos']['slave']['cgroups_hierarchy'] = value_for_platform(
   'default' => nil
 )
 
-set['java']['jdk_version'] = '7'
+set['java']['jdk_version'] = '8'
