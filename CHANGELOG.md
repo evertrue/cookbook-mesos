@@ -12,3 +12,4 @@ This is the Changelog for the et_mesos cookbook.
 ## Changes
 
 * Add a CHANGELOG!
+* **BREAKING:** Bump Mesos to 0.28.2
