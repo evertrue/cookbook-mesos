@@ -7,6 +7,12 @@ This is the Changelog for the et_mesos cookbook.
 
 ### Fixes
 
+## v6.0.1 - (2017-02-03)
+
+## Fixes
+
+* Set ulimit with attributes instead of hardcoding (new default: 65535)
+
 ## v6.0.0 - (2016-09-15)
 
 ## Changes
