@@ -42,7 +42,10 @@ end
 
 template '/etc/default/mesos' do
   source 'etc-default-mesos.erb'
-  variables log_dir: node['et_mesos']['slave']['log_dir']
+  variables(
+    log_dir: node['et_mesos']['slave']['log_dir'],
+    ulimit: node['et_mesos']['ulimit']
+  )
 end
 
 template '/etc/default/mesos-slave' do
