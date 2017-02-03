@@ -45,7 +45,7 @@ describe 'et_mesos::master' do
       end
 
       it 'contains ULIMIT variable' do
-        expect(mesos_file.content).to match(/^ULIMIT="-n 8192"$/)
+        expect(mesos_file.content).to match(/^ULIMIT="-n 65535"$/)
       end
     end
 
