@@ -49,7 +49,6 @@ shared_examples_for 'a slave node' do
 
   describe service('mesos-slave') do
     it { should be_enabled } if %w(ubuntu debian).include? os[:family]
-    # service mesos-master is required in order which the below was passed.
     it { should be_running }
   end
 end
