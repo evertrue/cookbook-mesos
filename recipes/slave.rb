@@ -23,7 +23,8 @@ end
 
 # configuration files for mesos-daemon.sh provided by both source and mesosphere
 template "#{deploy_dir}/mesos-slave-env.sh" do
-  source 'mesos-slave-env.sh.erb'
+  source 'mesos-env.sh.erb'
+  variables role: 'slave'
   notifies :reload,  'service[mesos-slave]', :delayed
   notifies :restart, 'service[mesos-slave]', :delayed
 end
@@ -35,16 +36,6 @@ template '/etc/init/mesos-slave.conf' do
 end
 
 # configuration files for service scripts(mesos-init-wrapper) by mesosphere package.
-template '/etc/mesos/zk' do
-  source 'etc-mesos-zk.erb'
-  variables zk: node['et_mesos']['slave']['master']
-end
-
-template '/etc/default/mesos' do
-  source 'etc-default-mesos.erb'
-  variables log_dir: node['et_mesos']['slave']['log_dir']
-end
-
 template '/etc/default/mesos-slave' do
   source 'etc-default-mesos-slave.erb'
   variables isolation: node['et_mesos']['slave']['isolation']

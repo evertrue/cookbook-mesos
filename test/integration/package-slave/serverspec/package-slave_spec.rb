@@ -5,6 +5,7 @@ require 'spec_helper'
 describe 'et_mesos::slave' do
   it_behaves_like 'an installation from package', with_zookeeper: true
 
+  it_behaves_like 'all nodes'
   it_behaves_like 'a slave node'
 
   context 'slave upstart script' do
@@ -28,24 +29,6 @@ describe 'et_mesos::slave' do
 
       it 'contains configured master' do
         expect(zk_file.content).to match %r{^zk://localhost:2181/mesos$}
-      end
-    end
-
-    describe 'general mesos configuration file' do
-      let :mesos_file do
-        file('/etc/default/mesos')
-      end
-
-      it 'creates it' do
-        expect(mesos_file).to be_a_file
-      end
-
-      it 'contains LOGS variable' do
-        expect(mesos_file.content).to match %r{^LOGS=/var/log/mesos$}
-      end
-
-      it 'contains ULIMIT variable' do
-        expect(mesos_file.content).to match(/^ULIMIT="-n 8192"$/)
       end
     end
 

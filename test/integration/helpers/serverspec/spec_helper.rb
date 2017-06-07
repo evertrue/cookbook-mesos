@@ -6,3 +6,4 @@ set :backend, :exec
 require 'package_installation'
 require 'master_configuration'
 require 'slave_configuration'
+require 'common_configuration'

@@ -63,7 +63,7 @@ shared_examples_for 'a master node' do
     end
 
     it 'contains log_dir variable' do
-      expect(master_env_file.content).to match %r{^export MESOS_log_dir=/var/log/mesos$}
+      expect(master_env_file.content).to match %r{^export MESOS_log_dir="/var/log/mesos"$}
     end
 
     it 'contains port variable' do

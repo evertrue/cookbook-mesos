@@ -1,0 +1,21 @@
+# This file is maintained by Chef. Changes will be overwritten.
+
+# This file contains environment variables that are passed to mesos-<%= @role %>.
+# To get a description of all options run mesos-<%= @role %> --help; any option
+# supported as a command-line option is also supported as an environment
+# variable.
+
+<% if node['et_mesos'][@role] %>
+  <% node['et_mesos'][@role].each do |key, val| %>
+    <% if val.respond_to?(:to_path_hash) -%>
+      <% val.to_path_hash('_').each do |path_h| -%>
+export MESOS_<%= key %>_<%= path_h[:path] %>=<%= path_h[:content] %>
+      <% end -%>
+    <% else -%>
+export MESOS_<%= key %>=<%= val %>
+    <% end -%>
+  <% end %>
+<% end %>
+
+export MESOS_log_dir="<%= node['et_mesos']['log_dir'] %>"
+export MESOS_master="<%= node['et_mesos']['zk'] %>"

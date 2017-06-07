@@ -5,6 +5,7 @@ require 'spec_helper'
 describe 'et_mesos::master' do
   it_behaves_like 'an installation from package', with_zookeeper: true
 
+  it_behaves_like 'all nodes'
   it_behaves_like 'a master node'
 
   context 'master upstart script' do

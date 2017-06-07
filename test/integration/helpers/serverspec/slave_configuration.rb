@@ -31,7 +31,7 @@ shared_examples_for 'a slave node' do
     end
 
     it 'contains log_dir variable' do
-      expect(slave_env_file.content).to match %r{^export MESOS_log_dir=/var/log/mesos$}
+      expect(slave_env_file.content).to match %r{^export MESOS_log_dir="/var/log/mesos"$}
     end
 
     it 'contains work_dir variable' do

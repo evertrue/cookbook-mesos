@@ -35,6 +35,8 @@ template "#{deploy_dir}/mesos-deploy-env.sh"
 
 # configuration files for mesos-daemon.sh
 template "#{deploy_dir}/mesos-master-env.sh" do
+  source 'mesos-env.sh.erb'
+  variables role: 'master'
   notifies :reload,  'service[mesos-master]'
   notifies :restart, 'service[mesos-master]'
 end
@@ -49,19 +51,6 @@ end
 #
 # these template resources don't notify service resource because
 # changes of configuration can be detected in mesos-master-env.sh
-template '/etc/mesos/zk' do
-  source 'etc-mesos-zk.erb'
-  variables zk: node['et_mesos']['master']['zk']
-end
-
-template '/etc/default/mesos' do
-  source 'etc-default-mesos.erb'
-  variables(
-    log_dir: node['et_mesos']['master']['log_dir'],
-    ulimit: node['et_mesos']['ulimit']
-  )
-end
-
 template '/etc/default/mesos-master' do
   source 'etc-default-mesos-master.erb'
   variables port: node['et_mesos']['master']['port']
@@ -71,8 +60,10 @@ directory '/etc/mesos-master' do
   recursive true
 end
 
-# TODO: Refactor this to be idempotent, or have a guard - jeffbyrnes
-execute 'rm -rf /etc/mesos-master/*'
+# execute 'rm -rf /etc/mesos-master/*'
+file Dir.glob('/etc/mesos-master/*') do
+  action :delete
+end
 
 node['et_mesos']['master'].each do |key, val|
   next if %w(zk log_dir port).include? key
