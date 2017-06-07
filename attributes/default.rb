@@ -13,12 +13,11 @@ default['et_mesos']['master_ips']       = []
 default['et_mesos']['slave_ips']        = []
 default['et_mesos']['ulimit']           = 65_535
 
+default['et_mesos']['log_dir'] = '/var/log/mesos'
 
-default['et_mesos']['master']['log_dir']  = '/var/log/mesos'
 default['et_mesos']['master']['work_dir'] = '/tmp/mesos'
 default['et_mesos']['master']['port']     = '5050'
 
-default['et_mesos']['slave']['log_dir']   = '/var/log/mesos'
 default['et_mesos']['slave']['work_dir']  = '/tmp/mesos'
 default['et_mesos']['slave']['isolation'] = 'cgroups/cpu,cgroups/mem'
 

@@ -34,10 +34,10 @@ suites:
       - recipe[et_mesos::master]
     attributes:
       et_mesos:
+        zk: 'zk://localhost:2181/mesos'
         package:
           with_zookeeper: true
         master:
-          zk: 'zk://localhost:2181/mesos'
           quorum: 1
         master_ips:
           - 10.0.0.1
@@ -59,12 +59,11 @@ suites:
       - recipe[et_mesos::slave]
     attributes:
       et_mesos:
+        zk: 'zk://localhost:2181/mesos'
         slave:
           attributes:
             rackid: us-east-1b
-          master: 'zk://localhost:2181/mesos'
         master:
-          zk: 'zk://localhost:2181/mesos'
           quorum: 1
         # these keys below are only for master configurations.
         master_ips:

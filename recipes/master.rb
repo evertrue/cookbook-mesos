@@ -17,13 +17,11 @@ directory deploy_dir do
   recursive true
 end
 
-unless node['et_mesos']['master']['zk']
-  raise "node['et_mesos']['master']['zk'] is required to configure mesos-master."
-end
+
+fail 'node["et_mesos"]["zk"] is required to configure mesos-master.' unless node['et_mesos']['zk']
 
 unless node['et_mesos']['master']['quorum']
-  raise "node['et_mesos']['master']['quorum'] is required to configure " \
-       'mesos-master.'
+  fail 'node["et_mesos"]["master"]["quorum"] is required to configure mesos-master.'
 end
 
 # configuration files for mesos-[start|stop]-cluster.sh

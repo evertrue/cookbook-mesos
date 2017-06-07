@@ -17,9 +17,7 @@ directory deploy_dir do
   recursive true
 end
 
-unless node['et_mesos']['slave']['master']
-  raise "node['et_mesos']['slave']['master'] is required to configure mesos-slave."
-end
+fail 'node["et_mesos"]["zk"] is required to configure mesos-slave.' unless node['et_mesos']['zk']
 
 # configuration files for mesos-daemon.sh provided by both source and mesosphere
 template "#{deploy_dir}/mesos-slave-env.sh" do
