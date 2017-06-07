@@ -47,12 +47,6 @@ shared_examples_for 'a slave node' do
     end
   end
 
-  context 'slave upstart script' do
-    describe file '/etc/init/mesos-slave.conf' do
-      it { is_expected.to be_file }
-    end
-  end
-
   describe service('mesos-slave') do
     it { should be_enabled } if %w(ubuntu debian).include? os[:family]
     # service mesos-master is required in order which the below was passed.

@@ -9,10 +9,19 @@ describe 'et_mesos::master' do
   it_behaves_like 'a master node'
 
   context 'master upstart script' do
-    describe file '/etc/init/mesos-master.conf' do
-      describe '#content' do
-        subject { super().content }
-        it { is_expected.to include 'exec /usr/bin/mesos-init-wrapper master' }
+    if os[:release].to_i < 16
+      describe file '/etc/init/mesos-master.conf' do
+        describe '#content' do
+          subject { super().content }
+          it { is_expected.to include 'exec /usr/bin/mesos-init-wrapper master' }
+        end
+      end
+    else
+      describe file '/lib/systemd/system/mesos-master.service' do
+        describe '#content' do
+          subject { super().content }
+          it { is_expected.to contain 'ExecStart=/usr/bin/mesos-init-wrapper master' }
+        end
       end
     end
   end

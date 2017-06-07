@@ -71,12 +71,6 @@ shared_examples_for 'a master node' do
     end
   end
 
-  context 'master upstart script' do
-    describe file '/etc/init/mesos-master.conf' do
-      it { is_expected.to be_file }
-    end
-  end
-
   describe service('mesos-master') do
     it { should be_enabled } if %w(ubuntu debian).include? os[:family]
     it { should be_running }

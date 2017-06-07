@@ -6,7 +6,7 @@
 include_recipe 'et_mesos::default'
 
 service 'mesos-slave' do
-  provider Chef::Provider::Service::Upstart
+  provider Chef::Provider::Service::Upstart if node['platform_version'].to_i < 16
   supports restart: true, reload: true
   action :nothing
 end
@@ -33,6 +33,7 @@ template '/etc/init/mesos-slave.conf' do
   source 'upstart.conf.erb'
   variables init_state: 'start', role: 'slave'
   notifies :reload, 'service[mesos-slave]'
+  only_if { node['platform_version'].to_i < 16 }
 end
 
 # configuration files for service scripts(mesos-init-wrapper) by mesosphere package.

@@ -9,10 +9,19 @@ describe 'et_mesos::slave' do
   it_behaves_like 'a slave node'
 
   context 'slave upstart script' do
-    describe file '/etc/init/mesos-slave.conf' do
-      describe '#content' do
-        subject { super().content }
-        it { is_expected.to include 'exec /usr/bin/mesos-init-wrapper slave' }
+    if os[:release].to_i < 16
+      describe file '/etc/init/mesos-slave.conf' do
+        describe '#content' do
+          subject { super().content }
+          it { is_expected.to include 'exec /usr/bin/mesos-init-wrapper slave' }
+        end
+      end
+    else
+      describe file '/lib/systemd/system/mesos-slave.service' do
+        describe '#content' do
+          subject { super().content }
+          it { is_expected.to contain 'ExecStart=/usr/bin/mesos-init-wrapper slave' }
+        end
       end
     end
   end
