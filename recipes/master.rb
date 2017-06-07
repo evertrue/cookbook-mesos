@@ -25,11 +25,7 @@ unless node['et_mesos']['master']['quorum']
 end
 
 # configuration files for mesos-[start|stop]-cluster.sh
-template "#{deploy_dir}/masters"
-
-template "#{deploy_dir}/slaves"
-
-template "#{deploy_dir}/mesos-deploy-env.sh"
+%w(masters slaves mesos-deploy-env.sh).each { |file| template "#{deploy_dir}/#{file}" }
 
 # configuration files for mesos-daemon.sh
 template "#{deploy_dir}/mesos-master-env.sh" do
@@ -54,9 +50,7 @@ template '/etc/default/mesos-master' do
   variables port: node['et_mesos']['master']['port']
 end
 
-directory '/etc/mesos-master' do
-  recursive true
-end
+directory '/etc/mesos-master'
 
 # execute 'rm -rf /etc/mesos-master/*'
 file Dir.glob('/etc/mesos-master/*') do
