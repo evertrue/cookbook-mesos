@@ -29,6 +29,7 @@ suites:
       tags:
         Name: et-mesos-package-master
     run_list:
+      - recipe[zookeeper_minimal]
       - recipe[et_mesos::master]
     attributes:
       et_mesos:
@@ -51,6 +52,7 @@ suites:
       tags:
         Name: et-mesos-package-slave
     run_list:
+      - recipe[zookeeper_minimal]
       # master recipe is only for asserting mesos-slave healthy startup.
       - recipe[et_mesos::master]
       - recipe[et_mesos::slave]
@@ -73,4 +75,4 @@ suites:
           - 10.0.0.5
           - 10.0.0.6
         package:
-          with_zookeeper: true
+          with_zookeeper: false

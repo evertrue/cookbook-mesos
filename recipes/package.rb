@@ -3,8 +3,6 @@
 # Recipe:: package
 #
 
-include_recipe 'et_mesos::zookeeper' if node['et_mesos']['package']['with_zookeeper']
-
 case node['platform']
 when 'centos'
   repo_url = value_for_platform(

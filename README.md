@@ -20,9 +20,8 @@ Install Java and Mesos, with platform-dependent switches in place.
 ### et_mesos::package
 
 Install Mesos using Mesosphere's `mesos` package.
-You can also install `zookeeper` package by `node['et_mesos']['package']['with_zookeeper']` if required because Mesosphere's Mesos package doesn't necessarily include ZooKeeper.
 
-For a production use case, however, instead of setting that attribute to true, one should use the [`zookeeper` cookbook](https://supermarket.chef.io/cookbooks/zookeeper) to provision a well-configured ZooKeeper instance or cluster of instances. There is a caveat to this: the `mesos` package on Ubuntu installs the `zookeeper` package, so co-locating Mesos and ZooKeeper using that cookbook is tricky, at best. A separate ZK cluster is encouraged.
+One should use the [`zookeeper` cookbook](https://supermarket.chef.io/cookbooks/zookeeper) to provision a well-configured ZooKeeper instance or cluster of instances. There is a caveat to this: the `mesos` package on Ubuntu installs the `zookeeper` package, so co-locating Mesos and ZooKeeper using that cookbook is tricky, at best. A separate ZK cluster is encouraged.
 
 ### et_mesos::master
 
@@ -121,12 +120,6 @@ The recommendation would be to have two wrapper cookbooks, one for the master(s)
         <td><tt>0.22.1</tt></td>
     </tr>
     <tr>
-        <td><tt>['et_mesos']['package']['with_zookeeper']</tt></td>
-        <td>String</td>
-        <td>Flag for installing zookeeper package</tt>.</td>
-        <td><tt>false</tt></td>
-    </tr>
-    <tr>
         <td><tt>['et_mesos']['ssh_opt']</tt></td>
         <td>String</td>
         <td>ssh options to be used in <tt>mesos-[start|stop]-cluster</tt></td>
@@ -157,7 +150,7 @@ The recommendation would be to have two wrapper cookbooks, one for the master(s)
         <td>[ ]</td>
     </tr>
     <tr>
-        <td><tt>['et_mesos']['master']['zk']</tt></td>
+        <td><tt>['et_mesos']['zk']</tt></td>
         <td>String</td>
         <td>[REQUIRED(0.19.1+)] ZooKeeper URL (used for leader election amongst masters). May be one of:<br>
         zk://host1:port1,host2:port2,…path<br>

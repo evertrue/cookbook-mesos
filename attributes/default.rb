@@ -7,7 +7,6 @@ default['et_mesos']['master_ips']       = []
 default['et_mesos']['slave_ips']        = []
 default['et_mesos']['ulimit']           = 65_535
 
-default['et_mesos']['package']['with_zookeeper'] = false
 
 default['et_mesos']['master']['log_dir']  = '/var/log/mesos'
 default['et_mesos']['master']['work_dir'] = '/tmp/mesos'

@@ -38,18 +38,6 @@ describe 'et_mesos::package' do
     end
   end
 
-  context "when node['et_mesos']['package']['with_zookeeper'] = true, on any platform" do
-    let :chef_run do
-      ChefSpec::ServerRunner.new do |node|
-        node.set['et_mesos']['package']['with_zookeeper'] = true
-      end.converge described_recipe
-    end
-
-    it 'includes et_mesos::zookeeper' do
-      expect(chef_run).to include_recipe 'et_mesos::zookeeper'
-    end
-  end
-
   context 'when all attributes are default, on Ubuntu 14.04' do
     let(:chef_run) { ChefSpec::ServerRunner.new.converge described_recipe }
 
