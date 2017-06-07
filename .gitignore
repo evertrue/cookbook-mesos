@@ -64,3 +64,5 @@ target
 .kitchen.local.yml
 !Gemfile.lock
 .coverage
+
+LATEST_CHANGELOG.md
