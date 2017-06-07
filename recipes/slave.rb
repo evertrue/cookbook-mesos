@@ -7,7 +7,7 @@ include_recipe 'et_mesos::default'
 
 service 'mesos-slave' do
   provider Chef::Provider::Service::Upstart if node['platform_version'].to_i < 16
-  supports restart: true, reload: true
+  supports restart: true
   action :nothing
 end
 
@@ -23,14 +23,13 @@ fail 'node["et_mesos"]["zk"] is required to configure mesos-slave.' unless node[
 template "#{deploy_dir}/mesos-slave-env.sh" do
   source 'mesos-env.sh.erb'
   variables role: 'slave'
-  notifies :reload,  'service[mesos-slave]', :delayed
   notifies :restart, 'service[mesos-slave]', :delayed
 end
 
 template '/etc/init/mesos-slave.conf' do
   source 'upstart.conf.erb'
   variables init_state: 'start', role: 'slave'
-  notifies :reload, 'service[mesos-slave]'
+  notifies :restart, 'service[mesos-slave]'
   only_if { node['platform_version'].to_i < 16 }
 end
 
