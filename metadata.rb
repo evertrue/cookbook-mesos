@@ -9,7 +9,6 @@ issues_url       'https://github.com/evertrue/et_mesos-cookbook/issues' if respo
 source_url       'https://github.com/evertrue/et_mesos-cookbook/' if respond_to?(:source_url)
 
 supports         'ubuntu', '>= 14.04'
-supports         'centos', '>= 6.5'
 
 recipe           'et_mesos::default', 'install mesos.'
 recipe           'et_mesos::package', 'install mesos from mesosphere package.'

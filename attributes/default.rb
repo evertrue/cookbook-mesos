@@ -21,11 +21,6 @@ default['et_mesos']['master']['port']     = '5050'
 default['et_mesos']['slave']['work_dir']  = '/tmp/mesos'
 default['et_mesos']['slave']['isolation'] = 'cgroups/cpu,cgroups/mem'
 
-default['et_mesos']['slave']['cgroups_hierarchy'] = value_for_platform(
-  'centos' => {
-    'default' => '/cgroup'
-  },
-  'default' => nil
-)
+default['et_mesos']['slave']['cgroups_hierarchy'] = nil
 
 default['java']['jdk_version'] = '7'
