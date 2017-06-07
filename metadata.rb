@@ -4,7 +4,7 @@ maintainer_email 'devops@evertrue.com'
 license          'MIT'
 description      'Installs/Configures mesos'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version          '6.0.1'
+version          '7.0.0'
 issues_url       'https://github.com/evertrue/et_mesos-cookbook/issues' if respond_to?(:issues_url)
 source_url       'https://github.com/evertrue/et_mesos-cookbook/' if respond_to?(:source_url)
 
