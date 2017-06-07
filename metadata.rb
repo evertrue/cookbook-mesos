@@ -22,37 +22,3 @@ depends          'yum',             '>= 3.7'
 
 suggests         'docker'
 suggests         'zookeeper'
-
-attribute       'et_mesos/version',
-  recipes:      ['et_mesos::package'],
-  display_name: 'Version to be installed.',
-  description:  "branch name or tag name at http://github.com/apache/mesos, or mesos's version name",
-  default:      '0.23.0'
-
-attribute       'et_mesos/package/with_zookeeper',
-  recipes:      ['et_mesos::package'],
-  display_name: 'switch for installing zookeeper packages',
-  description:  "if true, zookeeper packages will be installed with mesosphere's mesos package",
-  default:      'false'
-
-attribute       'et_mesos/ssh_opts',
-  recipes:      ['et_mesos::master'],
-  display_name: 'ssh options',
-  description:  'passed to be mesos-deploy-env.sh',
-  default:      '-o StrictHostKeyChecking=no -o ConnectTimeout=2'
-
-attribute       'et_mesos/deploy_with_sudo',
-  recipes:      ['et_mesos::master'],
-  display_name: 'Flag whether sudo will be used in mesos deploy scripts',
-  description:  'Flag whether sudo will be used in mesos deploy scripts',
-  default:      '1'
-
-attribute       'et_mesos/master_ips',
-  recipes:      ['et_mesos::master'],
-  display_name: 'IP list of masters',
-  description:  'used in mesos-start/stop-cluster scripts.'
-
-attribute       'et_mesos/slave_ips',
-  recipes:      ['et_mesos::master'],
-  display_name: 'IP list of slaves',
-  description:  'used in mesos-start/stop-cluster scripts.'
