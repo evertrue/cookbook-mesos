@@ -8,7 +8,7 @@ include_recipe 'et_mesos::default'
 service 'mesos-slave' do
   provider Chef::Provider::Service::Upstart if node['platform_version'].to_i < 16
   supports restart: true
-  action :nothing
+  action %i(enable start)
 end
 
 deploy_dir = node['et_mesos']['deploy_dir']
